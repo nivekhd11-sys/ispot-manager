@@ -564,25 +564,25 @@ def eliminar(cliente_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route("/sumar_stock/<string:prod_id>")
+@app.route('/sumar_stock/<path:prod_id>')
 def sumar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
     if db_type == 'postgres':
-        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE id = %s", (prod_id,))
+        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE producto = %s", (prod_id,))
     else:
-        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE id = ?", (prod_id,))
+        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE producto = ?", (prod_id,))
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route("/restar_stock/<string:prod_id>")
+@app.route('/restar_stock/<path:prod_id>')
 def restar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
     if db_type == 'postgres':
-        cursor.execute("UPDATE productos SET stock = GREATEST(0, stock - 1) WHERE id = %s", (prod_id,))
+        cursor.execute("UPDATE productos SET stock = GREATEST(0, stock - 1) WHERE producto = %s", (prod_id,))
     else:
-        cursor.execute("UPDATE productos SET stock = MAX(0, stock - 1) WHERE id = ?", (prod_id,))
+        cursor.execute("UPDATE productos SET stock = MAX(0, stock - 1) WHERE producto = ?", (prod_id,))
     conn.commit()
     conn.close()
     return redirect("/")
