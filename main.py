@@ -205,10 +205,11 @@ HTML_TEMPLATE = """
                         <tr>
                             <td><b>{{ item.producto }}</b></td>
                            <td>
-        <div style="display: flex; align-items: center; gap: 6px;">
-            <a href="/restar_stock/{{ item.id }}" style="color: #ff4d4d; text-decoration: none; font-weight: bold; font-size: 16px;">-</a>
+        <td>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="/restar_stock/{{ item.producto }}" style="color: #ff4d4d; text-decoration: none; font-weight: bold; font-size: 18px;">-</a>
             <span>{{ item.stock }} unids</span>
-            <a href="/sumar_stock/{{ item.id }}" style="color: #2ecc71; text-decoration: none; font-weight: bold; font-size: 16px;">+</a>
+            <a href="/sumar_stock/{{ item.producto }}" style="color: #2ecc71; text-decoration: none; font-weight: bold; font-size: 18px;">+</a>
         </div>
     </td>
                             <td style="color: var(--text-muted);">${{ "%.2f"|format(item.costo) }}</td>
