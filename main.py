@@ -1,7 +1,18 @@
-import sqlite3
 from flask import Flask, redirect, render_template_string, request, url_for
 app = Flask(__name__)
-DB_NAME = "ispot.db"
+import os
+import sqlite3
+import psycopg2
+DB_NAME = 'ispot.db'
+def get_db_connection():
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        conn = psycopg2.connect(database_url, sslmode='require')
+        return conn, 'postgres'
+    else:
+        conn = sqlite3.connect(DB_NAME)
+        conn.row_factory = sqlite3.Row
+        return conn, 'sqlite' 
 # ---------------------------------------------------------
 # BASE DE DATOS Y TABLAS (CLIENTES, INVENTARIO Y GASTOS)
 # ---------------------------------------------------------
