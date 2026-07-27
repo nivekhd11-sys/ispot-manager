@@ -551,11 +551,11 @@ def eliminar(cliente_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
     if db_type == 'postgres':
-        cursor.execute("DELETE FROM clientes WHERE id = %s")
+        cursor.execute("DELETE FROM clientes WHERE id = %s", (cliente_id,))
     else:
         cursor.execute("DELETE FROM clientes WHERE id = ?", (cliente_id,))
     conn.commit()
     conn.close()
-    return redirect(url_for("home"))
+    return redirect("/")
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
