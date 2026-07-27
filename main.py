@@ -557,5 +557,27 @@ def eliminar(cliente_id):
     conn.commit()
     conn.close()
     return redirect("/")
+@app.route("/sumar_stock/<string:prod_id>")
+def sumar_stock(prod_id):
+    conn, db_type = get_db_connection()
+    cursor = conn.cursor()
+    if db_type == 'postgres':
+        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE id = %s", (prod_id,))
+    else:
+        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE id = ?", (prod_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+@app.route("/restar_stock/<string:prod_id>")
+def restar_stock(prod_id):
+    conn, db_type = get_db_connection()
+    cursor = conn.cursor()
+    if db_type == 'postgres':
+        cursor.execute("UPDATE productos SET stock = GREATEST(0, stock - 1) WHERE id = %s", (prod_id,))
+    else:
+        cursor.execute("UPDATE productos SET stock = MAX(0, stock - 1) WHERE id = ?", (prod_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/")
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
