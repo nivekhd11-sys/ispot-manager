@@ -3,3 +3,5 @@ gunicorn
 flask
 gunicorn
 psycopg2-binary
+Flask
+psycopg2-binary
