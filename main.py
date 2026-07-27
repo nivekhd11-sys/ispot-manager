@@ -548,9 +548,12 @@ def actualizar(cliente_id):
     return redirect(url_for("home"))
 @app.route("/eliminar/<string:cliente_id>")
 def eliminar(cliente_id):
-    conn = sqlite3.connect(DB_NAME)
+    conn, db_type = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM clientes WHERE id = ?", (cliente_id,))
+    if db_type == 'postgres':
+        cursor.execute("DELETE FROM clientes WHERE id = %s")
+    else:
+        cursor.execute("DELETE FROM clientes WHERE id = ?", (cliente_id,))
     conn.commit()
     conn.close()
     return redirect(url_for("home"))
