@@ -381,7 +381,7 @@ def home():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM clientes")
     clientes = cursor.fetchall()
-    cursor.execute("SELECT * FROM inventario")
+    cursor.execute("SELECT * FROM productos")
     inventario = cursor.fetchall()
     cursor.execute("SELECT * FROM gastos")
     gastos = cursor.fetchall()
