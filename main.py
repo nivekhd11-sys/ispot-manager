@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template_string, request, url_for
+from flask import Flask, redirect, render_template, request, url_for
 app = Flask(__name__)
 import os
 import sqlite3
@@ -438,18 +438,16 @@ def home():
     ganancia_neta = total_ingresos - total_costos_y_gastos
     total_por_cobrar = sum((c["monto"] - c["abonado"]) for c in clientes)
     conn.close()
-    return render_template_string(
-        HTML_TEMPLATE,
-        clientes=clientes,
-        inventario=inventario,
-        gastos=gastos,
-        valor_inventario=valor_inventario,
-        total_ingresos=total_ingresos,
-        total_costos_y_gastos=total_costos_y_gastos,
-        ganancia_neta=ganancia_neta,
-        total_por_cobrar=total_por_cobrar,
-        cliente_edit=None,
-    )
+    return render_template('index.html', 
+                           clientes=clientes,
+                           inventario=inventario,
+                           gastos=gastos,
+                           valor_inventario=valor_inventario,
+                           total_ingresos=total_ingresos,
+                           total_costos_y_gastos=total_costos_y_gastos,
+                           ganancia_neta=ganancia_neta,
+                           total_por_cobrar=total_por_cobrar,
+                           cliente_edit=None)
 @app.route("/agregar", methods=["POST"])
 def agregar():
     conn = sqlite3.connect(DB_NAME)
@@ -553,7 +551,7 @@ def editar(cliente_id):
     ganancia_neta = total_ingresos - total_costos_y_gastos
     total_por_cobrar = sum((c["monto"] - c["abonado"]) for c in clientes)
     conn.close()
-    return render_template_string(
+    return render_template(
         HTML_TEMPLATE,
         clientes=clientes,
         inventario=inventario,
