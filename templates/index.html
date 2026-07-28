@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSPOT Manager</title>
+    <style>
+        body { background-color: #121212; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #ffffff; }
+        .container { max-width: 900px; margin: 0 auto; background: #1e1e1e; padding: 20px; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #252525; }
+        .btn-action { background: none; border: none; font-size: 18px; font-weight: bold; cursor: pointer; padding: 0 5px; }
+        .btn-plus { color: #2ecc71; }
+        .btn-minus { color: #e74c3c; }
+        .btn-delete { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>iSPOT Manager</h1>
+        <h2>Control de Inventario</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>PRODUCTO</th>
+                    <th>STOCK</th>
+                    <th>COSTO ($)</th>
+                    <th>PRECIO ($)</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in inventario %}
+                <tr>
+                    <td><b>{{ item.producto }}</b></td>
+                    <td>
+                        <form action="/restar_stock/{{ item.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-action btn-minus">-</button>
+                        </form>
+                        {{ item.stock }} unids
+                        <form action="/sumar_stock/{{ item.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-action btn-plus">+</button>
+                        </form>
+                    </td>
+                    <td>${{ item.costo }}</td>
+                    <td>${{ item.precio }}</td>
+                    <td>
+                        <form action="/eliminar_producto/{{ item.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-delete">X</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
