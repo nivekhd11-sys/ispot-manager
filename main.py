@@ -17,10 +17,10 @@ def get_db_connection():
 # BASE DE DATOS Y TABLAS (CLIENTES, INVENTARIO Y GASTOS)
 # ---------------------------------------------------------
 def init_db():
-    conn = sqlite3.connect(DB_NAME)
+    conn, db_type = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        """
+    # 1. Tabla clientes
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS clientes (
             id TEXT PRIMARY KEY,
             nombre TEXT NOT NULL,
@@ -32,41 +32,48 @@ def init_db():
             plan TEXT NOT NULL,
             estado TEXT NOT NULL
         )
-    """
-    )
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS inventario (
-            producto TEXT PRIMARY KEY,
-            stock INTEGER NOT NULL,
-            costo REAL NOT NULL,
-            precio REAL NOT NULL
-        )
-    """
-    )
-    cursor.execute(
-        """
+    """)
+    # 2. Tabla inventario
+    if db_type == 'postgres':
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS inventario (
+                nombre TEXT PRIMARY KEY,
+                stock INTEGER NOT NULL,
+                costo REAL NOT NULL,
+                precio REAL NOT NULL
+            )
+        """)
+    else:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS inventario (
+                nombre TEXT PRIMARY KEY,
+                stock INTEGER NOT NULL,
+                costo REAL NOT NULL,
+                precio REAL NOT NULL
+            )
+        """)
+    # 3. Tabla gastos
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS gastos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             concepto TEXT NOT NULL,
             categoria TEXT NOT NULL,
             monto REAL NOT NULL
         )
-    """
-    )
+    """)
+    # Insertar productos iniciales si está vacío
     cursor.execute("SELECT COUNT(*) FROM inventario")
     if cursor.fetchone()[0] == 0:
-        cursor.execute(
-            """
+        cursor.execute("""
             INSERT INTO inventario VALUES
             ('iPhone 15 Pro Max', 5, 950.0, 1200.0),
             ('AirPods Pro 2', 10, 180.0, 250.0),
             ('MacBook Air M3', 3, 850.0, 1100.0)
-        """
-        )
-        conn.commit()
+        """)
+    conn.commit()
     conn.close()
-init_db()
+# Ejecutar la función al arrancar la app
+init_db() 
 # ---------------------------------------------------------
 # INTERFAZ WEB COMPLETA
 # ---------------------------------------------------------
