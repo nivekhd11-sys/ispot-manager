@@ -232,19 +232,19 @@ HTML_TEMPLATE = """
                     <tbody>
                         {% for item in inventario %}
                         <tr>
-                            <td><b>{{ item.producto }}</b></td>
+                            <td><b>{{ item.nombre }}</b></td>
                            <td>
         <td>
         <div style="display: flex; align-items: center; gap: 8px;">
-            <a href="/restar_stock/{{ item.producto }}" style="color: #ff4d4d; text-decoration: none; font-weight: bold; font-size: 18px;">-</a>
+            <a href="/restar_stock/{{ item.nombre }}" style="color: #ff4d4d; text-decoration: none; font-weight: bold; font-size: 18px;">-</a>
             <span>{{ item.stock }} unids</span>
-            <a href="/sumar_stock/{{ item.producto }}" style="color: #2ecc71; text-decoration: none; font-weight: bold; font-size: 18px;">+</a>
+            <a href="/sumar_stock/{{ item.nombre }}" style="color: #2ecc71; text-decoration: none; font-weight: bold; font-size: 18px;">+</a>
         </div>
     </td>
                             <td style="color: var(--text-muted);">${{ "%.2f"|format(item.costo) }}</td>
                             <td style="color: var(--accent-gold); font-weight:bold;">${{ "%.2f"|format(item.precio) }}</td>
                             <td>
-                                <a href="/eliminar_producto/{{ item.producto }}" class="btn-action btn-delete" onclick="return confirm('¿Quitar producto?')">X</a>
+                                <a href="/eliminar_producto/{{ item.nombre }}" class="btn-action btn-delete" onclick="return confirm('¿Quitar producto?')">X</a>
                             </td>
                         </tr>
                         {% endfor %}
