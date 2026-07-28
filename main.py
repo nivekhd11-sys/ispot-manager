@@ -300,7 +300,7 @@ HTML_TEMPLATE = """
                     <input type="text" name="telefono" placeholder="Teléfono (ej: 584121234567)" value="{{ cliente_edit.telefono if cliente_edit else '' }}" required>
                     <select name="producto">
                         {% for item in inventario %}
-                        <option value="{{ item.producto }}" {{ 'selected' if cliente_edit and cliente_edit.producto == item.producto }}>{{ item.producto }} (Stock: {{ item.stock }} | Venta: ${{ item.precio }})</option>
+                        <option value="{{ item.nombre }}" {{ 'selected' if cliente_edit and cliente_edit.nombre == item.nombre }}>{{ item.producto }} (Stock: {{ item.stock }} | Venta: ${{ item.precio }})</option>
                         {% endfor %}
                     </select>
                     <input type="number" step="0.01" name="monto" placeholder="Monto Total ($)" value="{{ cliente_edit.monto if cliente_edit else '' }}" required>
