@@ -35,7 +35,7 @@
             <tbody>
                 {% for item in inventario %}
                 <tr>
-                    <td><b>{{ item.producto }}</b></td>
+                    <td><b>{{ item.producto or item.nombre or item.articulo or item[1] }}</b></td>
                     <td>
                         <form action="/restar_stock/{{ item.id }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn-action btn-minus">-</button>
