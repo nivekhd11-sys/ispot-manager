@@ -341,7 +341,7 @@ HTML_TEMPLATE = """
                     <tr>
                         <td><span class="badge">{{ c.id }}</span></td>
                         <td><b>{{ c.nombre }}</b></td>
-                        <td>{{ c.producto }}</td>
+                        <td>{{ c.nombre }}</td>
                         <td>${{ "%.2f"|format(c.monto) }}</td>
                         <td style="color: var(--green);">${{ "%.2f"|format(c.abonado) }}</td>
                         <td style="color: {{ 'var(--red)' if deuda > 0 else 'var(--text-muted)' }}; font-weight: bold;">
@@ -350,7 +350,7 @@ HTML_TEMPLATE = """
                         <td>{{ c.estado }}</td>
                         <td>
                             <a href="https://wa.me/{{ c.telefono }}?text=Hola%20{{ c.nombre }},%20te%20saludamos%20de%20iSPOT.%20Tu%20estado%20de%20cuenta:%20Producto:%20{{ c.producto }}%20|%20Deuda:%20${{ '%.2f'|format(deuda) }}" target="_blank" class="btn-action btn-ws">WhatsApp</a>
-                            <button onclick="imprimirRecibo('{{ c.id }}', '{{ c.nombre }}', '{{ c.producto }}', '{{ c.monto }}', '{{ c.abonado }}', '{{ deuda }}')" class="btn-action btn-print">Recibo</button>
+                            <button onclick="imprimirRecibo('{{ c.id }}', '{{ c.nombre }}', '{{ c.nombre }}', '{{ c.monto }}', '{{ c.abonado }}', '{{ deuda }}')" class="btn-action btn-print">Recibo</button>
                             <a href="/editar/{{ c.id }}" class="btn-action btn-edit">Editar</a>
                             <a href="/eliminar/{{ c.id }}" class="btn-action btn-delete" onclick="return confirm('¿Eliminar registro?')">Quitar</a>
                         </td>
