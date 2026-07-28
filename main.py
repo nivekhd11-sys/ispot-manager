@@ -231,22 +231,29 @@ HTML_TEMPLATE = """
                     </thead>
                     <tbody>
                         {% for item in inventario %}
+{% for item in inventario %}
 <tr>
     <td><b>{{ item.nombre }}</b></td>
     <td>
     <div style="display: flex; align-items: center; gap: 8px;">
-        <a href="/restar_stock/{{ item.id }}" style="color: #ff4d4d; text-decoration: none; font-weight: bold;">-</a>
+        <form action="/restar_stock/{{ item.id }}" method="POST" style="margin:0;">
+            <button type="submit" style="background:none; border:none; color: #ff4d4d; font-weight: bold; cursor:pointer; font-size:16px;">-</button>
+        </form>
         <span>{{ item.stock }} unids</span>
-        <a href="/sumar_stock/{{ item.id }}" style="color: #2ecc71; text-decoration: none; font-weight: bold;">+</a>
+        <form action="/sumar_stock/{{ item.id }}" method="POST" style="margin:0;">
+            <button type="submit" style="background:none; border:none; color: #2ecc71; font-weight: bold; cursor:pointer; font-size:16px;">+</button>
+        </form>
     </div>
     </td>
+    <td style="color: var(--text-muted);">${{ "%.2f"|format(item.costo) }}</td>
+    <td style="color: var(--accent-gold); font-weight:bold;">${{ "%.2f"|format(item.precio) }}</td>
+    <td>
+        <form action="/eliminar_producto/{{ item.id }}" method="POST" style="margin:0;" onsubmit="return confirm('¿Quitar producto?');">
+            <button type="submit" class="btn-action btn-delete">X</button>
+        </form>
     </td>
-                            <td style="color: var(--text-muted);">${{ "%.2f"|format(item.costo) }}</td>
-                            <td style="color: var(--accent-gold); font-weight:bold;">${{ "%.2f"|format(item.precio) }}</td>
-                            <td>
-                                <a href="/eliminar_producto/{{ item.id }}" class="btn-action btn-delete" onclick="return confirm('¿Quitar producto?')">X</a>
-                            </td>
-                        </tr>
+</tr>
+{% endfor %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -593,7 +600,7 @@ def eliminar(cliente_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route('/sumar_stock/<path:prod_id>')
+@app.route('/sumar_stock/<path:prod_id>', methods=['POST'])
 def sumar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
@@ -604,7 +611,7 @@ def sumar_stock(prod_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route('/restar_stock/<path:prod_id>')
+@app.route('/restar_stock/<path:prod_id>', methods=['POST'])
 def restar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
@@ -612,6 +619,17 @@ def restar_stock(prod_id):
         cursor.execute("UPDATE inventario SET stock = GREATEST(0, stock - 1) WHERE id::text = %s OR nombre = %s", (str(prod_id), str(prod_id)))
     else:
         cursor.execute("UPDATE inventario SET stock = MAX(0, stock - 1) WHERE id = ? OR nombre = ?", (str(prod_id), str(prod_id)))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+@app.route('/eliminar_producto/<path:prod_id>', methods=['POST'])
+def eliminar_producto(prod_id):
+    conn, db_type = get_db_connection()
+    cursor = conn.cursor()
+    if db_type == 'postgres':
+        cursor.execute("DELETE FROM inventario WHERE id::text = %s OR nombre = %s", (str(prod_id), str(prod_id)))
+    else:
+        cursor.execute("DELETE FROM inventario WHERE id = ? OR nombre = ?", (str(prod_id), str(prod_id)))
     conn.commit()
     conn.close()
     return redirect("/")
