@@ -53,14 +53,25 @@ def init_db():
             )
         """)
     # 3. Tabla gastos
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS gastos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            concepto TEXT NOT NULL,
-            categoria TEXT NOT NULL,
-            monto REAL NOT NULL
-        )
-    """)
+    # 3. Tabla gastos compatible con Postgres y SQLite
+    if db_type == 'postgres':
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS gastos (
+                id SERIAL PRIMARY KEY,
+                concepto TEXT NOT NULL,
+                categoria TEXT NOT NULL,
+                monto REAL NOT NULL
+            )
+        """)
+    else:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS gastos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                concepto TEXT NOT NULL,
+                categoria TEXT NOT NULL,
+                monto REAL NOT NULL
+            )
+        """) 
     # Insertar productos iniciales si está vacío
     cursor.execute("SELECT COUNT(*) FROM inventario")
     if cursor.fetchone()[0] == 0:
