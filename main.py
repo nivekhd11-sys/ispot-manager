@@ -580,9 +580,9 @@ def sumar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
     if db_type == 'postgres':
-        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE producto = %s", (prod_id,))
+        cursor.execute("UPDATE inventario SET stock = stock + 1 WHERE nombre = %s", (prod_id,))
     else:
-        cursor.execute("UPDATE productos SET stock = stock + 1 WHERE producto = ?", (prod_id,))
+        cursor.execute("UPDATE inventario SET stock = stock + 1 WHERE nombre = ?", (prod_id,))
     conn.commit()
     conn.close()
     return redirect("/")
@@ -591,9 +591,9 @@ def restar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
     if db_type == 'postgres':
-        cursor.execute("UPDATE productos SET stock = GREATEST(0, stock - 1) WHERE producto = %s", (prod_id,))
+        cursor.execute("UPDATE inventario SET stock = GREATEST(0, stock - 1) WHERE nombre = %s", (prod_id,))
     else:
-        cursor.execute("UPDATE productos SET stock = MAX(0, stock - 1) WHERE producto = ?", (prod_id,))
+        cursor.execute("UPDATE inventario SET stock = MAX(0, stock - 1) WHERE nombre = ?", (prod_id,))
     conn.commit()
     conn.close()
     return redirect("/")
