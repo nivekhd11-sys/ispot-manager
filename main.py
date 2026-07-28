@@ -600,7 +600,8 @@ def eliminar(cliente_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route('/sumar_stock/<path:prod_id>', methods=['POST'])
+
+@app.route('/sumar_stock/<path:prod_id>', methods=['GET', 'POST'])
 def sumar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
@@ -611,7 +612,8 @@ def sumar_stock(prod_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route('/restar_stock/<path:prod_id>', methods=['POST'])
+
+@app.route('/restar_stock/<path:prod_id>', methods=['GET', 'POST'])
 def restar_stock(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
@@ -622,7 +624,8 @@ def restar_stock(prod_id):
     conn.commit()
     conn.close()
     return redirect("/")
-@app.route('/eliminar_producto/<path:prod_id>', methods=['POST'])
+
+@app.route('/eliminar_producto/<path:prod_id>', methods=['GET', 'POST'])
 def eliminar_producto(prod_id):
     conn, db_type = get_db_connection()
     cursor = conn.cursor()
@@ -633,5 +636,6 @@ def eliminar_producto(prod_id):
     conn.commit()
     conn.close()
     return redirect("/")
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
